@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import lxml
 
 
 headers = {'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) "
@@ -22,7 +23,8 @@ images_ids = []
 for i in range(len(images_tags)):
     if images_tags[i]['src'][23] == '/':
         images_ids.append(images_tags[i]['src'][24:41])
-        images_names.append(posts_names[i].text)
+        if posts_names[i].text[-5:-1].isalnum():
+            images_names.append(posts_names[i].text)
 
 
 for image in range(len(images_ids)):
@@ -30,6 +32,8 @@ for image in range(len(images_ids)):
     print(image_url)
 
     response_img = requests.get(image_url, headers=headers)
+
+    print(images_names[image]+images_ids[image][-4:])
 
     image = open(images_names[image]+images_ids[image][-4:], 'wb')
     image.write(response_img.content)
