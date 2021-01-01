@@ -8,8 +8,11 @@ url = 'https://www.reddit.com/r/wallpaper/top/?t=day'
 html_text = requests.get(url, headers=headers).text
 soup = BeautifulSoup(html_text, 'lxml')
 
+with open('html_text_file.html', 'w') as f:
+    f.write(html_text)
 
-def get_clean_html_page():
+
+def get_clean_html_code():
     html_file = soup.prettify()
     with open('html_file_orig.html', 'w') as f:
         for i in html_file:
@@ -25,21 +28,18 @@ def get_clean_html_page():
 
 
 posts = soup.find_all('div', class_='scrollerItem')
+
+
 for post in posts:
     # find objects in posts
     post_name = post.find('h3', class_='_eYtD2XCVieq6emjKBH3m').text
     date = post.find('div', class_='cZPZhMe-UCZ8htPodMyJ5').a.text
+    img = post.find('img', class_='media-element')
 
     print(f'''
     Post name: {post_name}
     Posted: {date}
+    IMG: {img}
     ''')
     print('')
 
-
-'''
-step 1: get src element which contains link with specific pic name 
-step 2: get this specific name
-step 3: make a link with this name (https://i.redd.it/pic_name.jpg) and got to this page
-step 4: get pic from this page
-'''
