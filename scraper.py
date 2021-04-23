@@ -1,12 +1,14 @@
 from bs4 import BeautifulSoup
 import requests
-import lxml
+import os
 
 
 headers = {'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) "
                          "AppleWebKit/537.75.14 (KHTML, like Gecko) "
                          "Version/7.0.3 Safari/7046A194A"}
 url = 'https://www.reddit.com/r/wallpaper/top/?t=day'
+
+dir_path = "/Users/innokentymikhalevsky/Library/Mobile Documents/com~apple~CloudDocs/Pics/"
 
 
 html_text = requests.get(url, headers=headers).text
@@ -35,7 +37,8 @@ for image in range(len(images_ids)):
 
     print(images_names[image]+images_ids[image][-4:])
 
-    image = open(images_names[image]+images_ids[image][-4:], 'wb')
+    # name of img + .jpg or .png
+    image = open(os.path.join(dir_path, images_names[image] + images_ids[image][-4:]), 'wb')
     image.write(response_img.content)
     image.close()
 
